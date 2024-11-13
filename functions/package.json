@@ -1,0 +1,15 @@
+{
+  "name": "functions",
+  "version": "1.0.0",
+  "main": "chat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.18",
+    "@langchain/openai": "^0.3.13"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": ""
+}
