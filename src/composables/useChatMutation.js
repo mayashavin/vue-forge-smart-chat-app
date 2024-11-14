@@ -37,7 +37,7 @@ export default function useChatMutation() {
             throw new Error(response);
           }
 
-          return res.json()
+          return response
         })
 
         history[history.length - 1].message = data;
