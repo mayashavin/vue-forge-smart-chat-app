@@ -5,40 +5,42 @@ import {
   ChatPromptTemplate
 } from "@langchain/core/prompts";
 
-export const handler = async () => {
-  // const llm = new ChatOpenAI({
-  //   model: "gpt-4o",
-  //   temperature: 0,
-  //   // other params...
-  // });
+export const handler = async (event, context) => {
+  const query = event.body;
 
-  // const prompt = ChatPromptTemplate.fromMessages([
-  //   [
-  //     "system",
-  //     "You are a helpful assistant that translates {input_language} to {output_language}.",
-  //   ],
-  //   ["human", "{input}"],
-  // ]);
+  if (!query) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify("No query provided."),
+    }
+  }
 
-  // const chain = prompt.pipe(llm);
-  // const aiMsg = await chain.invoke({
-  //   input_language: "English",
-  //   output_language: "German",
-  //   input: "I love programming.",
-  // });
+  try {
+    const llm = new ChatOpenAI({
+      model: "gpt-4o",
+      temperature: 0,
+      maxTokens: 4000,
+      // other params...
+    });
 
-  // const aiMsg = await llm.invoke([{
-  //     role: "system",
-  //     content: "You are a helpful assistant that translates English to French. Translate the user sentence.",
-  //   },
-  //   {
-  //     role: "user",
-  //     content: "I love programming.",
-  //   },
-  // ]);
+    const aiMsg = await llm.invoke([{
+        role: "system",
+        content: "You are a helpful buddy that can assist me with my questions. Be funny, nice and engaging.",
+      },
+      {
+        role: "user",
+        content: query,
+      },
+    ]);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify("Hello from chat.js!"),
+    return {
+      statusCode: 200,
+      body: JSON.stringify(aiMsg.content),
+    }
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify(error.message),
+    }
   }
 }
