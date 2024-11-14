@@ -1,5 +1,6 @@
 <script setup lang="js">
 import { ref } from 'vue'
+import ChatInput from './components/ChatInput.vue'
 
 const data = ref('')
 
@@ -13,7 +14,14 @@ const startChat = async () => {
 
 <template>
   <div>
-    <button @click="startChat">Start Chat</button>
-    <p>{{ data }}</p>
+    <div id="messages-container"></div>
+    <chat-input />
   </div>
 </template>
+<style scoped>
+#messages-container {
+  height: calc(100vh - 140px);
+  padding: 2rem;
+  overflow-y: scroll;
+}
+</style>
