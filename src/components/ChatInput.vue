@@ -6,6 +6,7 @@
       placeholder="Type your message..."
       id="message-input"
       aria-label="Message input"
+      :disabled="isSending"
     />
     <button @click="sendMessage" class="send-btn" :disabled="isPending">Send</button>
   </div>
@@ -47,6 +48,13 @@ const sendMessage = (e) => {
   border-radius: 0.5rem;
   border: 1px solid var(--color-border);
 }
+
+#message-input:disabled {
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+  cursor: not-allowed;
+}
+
 .send-btn {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
