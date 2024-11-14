@@ -2,31 +2,35 @@
   <div id="chat-input-container">
     <input
       v-model="query"
-      @keyup.enter="sendDebounced"
+      @keyup.enter="sendMessage"
       placeholder="Type your message..."
       id="message-input"
       aria-label="Message input"
     />
-    <button @click="sendMessage" class="send-btn" :disabled="isSending">Send</button>
+    <button @click="sendMessage" class="send-btn" :disabled="isPending">Send</button>
   </div>
 </template>
 <script setup>
-import { useDebounce } from '@vueuse/core'
 import { ref } from 'vue'
+// import useChatMutation from '../composables/useChatMutation'
+
+const events = defineEmits(['onMessage'])
+
+const props = defineProps({
+  isPending: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const query = ref('')
-const isSending = ref(false)
+// const { mutate, isPending, data } = useChatMutation()
 
-const sendMessage = () => {
-  isSending.value = true
-  console.log('send message')
+const sendMessage = (e) => {
+  if (!query.value || props.isPending) return
 
-  setTimeout(() => {
-    isSending.value = false
-  }, 1000)
+  events('onMessage', query.value)
 }
-
-const sendDebounced = useDebounce(sendMessage, 1000)
 </script>
 <style scoped>
 #chat-input-container {
