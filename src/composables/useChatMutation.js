@@ -24,17 +24,29 @@ export default function useChatMutation() {
         role: 'assistant',
         message: '...',
       })
-      const data = await fetch('/.netlify/functions/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(query),
-      }).then((res) => res.json())
+      try {
+        const data = await fetch('/.netlify/functions/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(query),
+        }).then(async (res) => {
+          const response = await res.json();
+          if (res.status !== 200) {
+            throw new Error(response);
+          }
 
-      history[history.length - 1].message = data;
+          return res.json()
+        })
 
-      return data;
+        history[history.length - 1].message = data;
+
+        return data;
+      } catch (error) {
+        history[history.length - 1].message = 'Sorry, I am having trouble understanding you right now. Please try again later.';
+        throw error
+      }
     }
   })
 
