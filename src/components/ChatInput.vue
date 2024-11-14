@@ -6,7 +6,7 @@
       placeholder="Type your message..."
       id="message-input"
       aria-label="Message input"
-      :disabled="isSending"
+      :disabled="isPending"
     />
     <button @click="sendMessage" class="send-btn" :disabled="isPending">Send</button>
   </div>
@@ -31,6 +31,7 @@ const sendMessage = (e) => {
   if (!query.value || props.isPending) return
 
   events('onMessage', query.value)
+  query.value = ''
 }
 </script>
 <style scoped>
