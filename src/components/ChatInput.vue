@@ -2,16 +2,16 @@
   <div id="chat-input-container">
     <input
       v-model="query"
-      @keyup.enter="sendDebounced"
+      @keyup.enter="sendMessage"
       placeholder="Type your message..."
       id="message-input"
       aria-label="Message input"
+      :disabled="isSending"
     />
     <button @click="sendMessage" class="send-btn" :disabled="isSending">Send</button>
   </div>
 </template>
 <script setup>
-import { useDebounce } from '@vueuse/core'
 import { ref } from 'vue'
 
 const query = ref('')
@@ -23,10 +23,9 @@ const sendMessage = () => {
 
   setTimeout(() => {
     isSending.value = false
+    query.value = ''
   }, 1000)
 }
-
-const sendDebounced = useDebounce(sendMessage, 1000)
 </script>
 <style scoped>
 #chat-input-container {
@@ -43,6 +42,13 @@ const sendDebounced = useDebounce(sendMessage, 1000)
   border-radius: 0.5rem;
   border: 1px solid var(--color-border);
 }
+
+#message-input:disabled {
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+  cursor: not-allowed;
+}
+
 .send-btn {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
