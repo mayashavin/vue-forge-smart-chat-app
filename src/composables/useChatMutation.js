@@ -20,6 +20,10 @@ export default function useChatMutation() {
         role: 'user',
         message: query,
       });
+      history.push({
+        role: 'assistant',
+        message: '...',
+      })
       const data = await fetch('/.netlify/functions/chat', {
         method: 'POST',
         headers: {
@@ -28,10 +32,7 @@ export default function useChatMutation() {
         body: JSON.stringify(query),
       }).then((res) => res.json())
 
-      history.push({
-        role: 'assistant',
-        message: data,
-      });
+      history[history.length - 1].message = data;
 
       return data;
     }
@@ -43,6 +44,6 @@ export default function useChatMutation() {
     data,
     isPending,
     isError,
-    error
+    error,
   }
 }
