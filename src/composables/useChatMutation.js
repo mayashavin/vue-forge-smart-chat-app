@@ -20,6 +20,11 @@ export default function useChatMutation() {
         role: 'user',
         message: query,
       });
+
+      const body = JSON.stringify({
+        history
+      })
+
       history.push({
         role: 'assistant',
         message: '...',
@@ -30,14 +35,14 @@ export default function useChatMutation() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(query),
+          body,
         }).then(async (res) => {
           const response = await res.json();
           if (res.status !== 200) {
             throw new Error(response);
           }
 
-          return res.json()
+          return response
         })
 
         history[history.length - 1].message = data;
