@@ -1,9 +1,12 @@
 <template>
   <article :class="`chat-message ${isMainUser ? 'main-user' : ''}`">
-    {{ message }}
+    <Loader v-if="message === '...' && !isMainUser" />
+    <div v-else>{{ message }}</div>
   </article>
 </template>
 <script setup>
+import Loader from './Loader.vue'
+
 const props = defineProps({
   message: {
     type: String,
